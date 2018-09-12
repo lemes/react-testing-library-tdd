@@ -1,45 +1,32 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+
 import {
-  render as testingRender,
-  fireEvent,
   cleanup,
-  waitForElement
-} from "react-testing-library";
-import "jest-dom/extend-expect";
+  render,
+  fireEvent,
+  waitForElement,
+  cleanDiv
+} from './testHelper';
 
-import App from "./index";
+import App from './index';
 
+beforeAll(cleanDiv);
 afterEach(cleanup);
 
-const div = document.createElement("div");
-document.body.appendChild(div);
-
-function render(ui) {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-  return {
-    ...testingRender(ui, { container }),
-    debug: () => {
-      ReactDOM.render(ui, div);
-    }
-  };
-}
-
-test("test", () => {
+test('test', () => {
   const { getByText, debug } = render(<App />);
-  expect(getByText("Hello CodeSandbox")).toBeVisible();
+  expect(getByText('Hello CodeSandbox')).toBeVisible();
 });
 
-test("test 2", () => {
+test('test 2', () => {
   const { getByText, debug } = render(<App>Rener</App>);
-  expect(getByText("Rener")).toBeVisible();
+  expect(getByText('Rener')).toBeVisible();
 });
 
-test("test 3", async () => {
+test('test 3', async () => {
   const { getByText, debug } = render(<App>Vivi</App>);
-  fireEvent.click(getByText("Click me"));
-  const loading = await waitForElement(() => getByText("Loading"));
+  fireEvent.click(getByText('Click me'));
+  const loading = await waitForElement(() => getByText('Loading'));
   expect(loading).toBeVisible();
   debug();
 });
